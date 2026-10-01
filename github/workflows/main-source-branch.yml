@@ -1,0 +1,17 @@
+name: Check source branch for main
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: [opened, reopened, synchronize, edited]
+
+jobs:
+  check-source:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require dev as source branch
+        if: github.head_ref != 'dev'
+        run: |
+          echo "Les PR vers main doivent venir de la branche dev."
+          exit 1
