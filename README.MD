@@ -127,4 +127,4 @@ La squad comprend un Product Manager, un Business Analyst et six développeurs. 
 ## Liens utiles
 
 - **Projet Jira** : ajouter le lien du board.
-- **Dépôt GitHub** : [school-up-project](https://github.com/Beningassaki/school-up-project)
+- **Dépôt GitHub** : [school-sup](https://github.com/Beningassaki/school-sup)
