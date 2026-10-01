@@ -1,75 +1,90 @@
-# School-Sup
+# School-Sup — Démarches universitaires en ligne
 
-School-Sup est une plateforme web destinée à simplifier certaines démarches administratives universitaires à l’Université Marien Ngouabi. Elle vise en particulier les nouveaux bacheliers et les étudiants qui doivent aujourd’hui se déplacer pour obtenir des informations, déposer un dossier ou suivre son traitement.
+**School-Sup** est une plateforme web destinée à simplifier certaines démarches administratives de l’Université Marien Ngouabi. Elle aide les nouveaux bacheliers et les étudiants, notamment ceux qui vivent en province, à trouver les informations utiles, déposer une demande et suivre son traitement sans multiplier les déplacements.
 
-## Objectif du MVP
+Le MVP se concentre sur deux démarches : **la pré-inscription** et **la légalisation d’attestations**. Il comprend un parcours de paiement Mobile Money de démonstration, le suivi des dossiers et un espace de traitement pour les agents.
 
-Permettre à un étudiant de déposer une demande à distance, de suivre son avancement et, dans le cadre du prototype, de tester le paiement des frais. Un agent doit pouvoir consulter les dossiers concernés et les traiter.
+## Fonctionnalités du MVP
 
-## Périmètre fonctionnel
+| Module | Fonctionnalités prévues |
+| --- | --- |
+| **Compte et accès** | Création de compte étudiant, connexion et déconnexion (US1) |
+| **Catalogue** | Consultation des facultés, filières et conditions d’accès (US2) |
+| **Demandes** | Dépôt d’une demande de légalisation ou de pré-inscription avec pièces justificatives (US3, US4) |
+| **Paiement** | Parcours Mobile Money en mode démonstration; paiement confirmé ou échoué (US5) |
+| **Suivi** | Consultation du statut, du motif de refus et de l’historique du dossier (US6, US16) |
+| **Espace agent** | Consultation des dossiers payés, validation, refus motivé, filtre et demande de pièce complémentaire (US7, US8, US11, US14) |
+| **Reçu** | Reçu numérique après validation, avec code de vérification unique (US9) |
+| **Notifications** | Email lors d’un changement de statut; SMS si le temps le permet (US10, US12) |
+| **Administration** | Paramétrage du catalogue, des pièces et des montants, selon le temps disponible (US15) |
+| **Vérification** | Vérification d’un document avec son code si le temps le permet (US13) |
 
-### Priorité Must
+Les User Stories et leurs critères d’acceptation détaillés sont suivis dans Jira. Le tableau Jira fait foi si une priorité, une affectation ou un statut change.
 
-- Créer un compte étudiant et se connecter.
-- Consulter les facultés, les filières et leurs conditions d’accès.
-- Déposer une demande de légalisation ou de pré-inscription avec les pièces requises.
-- Effectuer le parcours de paiement Mobile Money dans l’environnement de démonstration.
-- Consulter le statut d’une demande et le motif d’un refus.
-- Permettre à l’agent de consulter les dossiers payés, puis de les valider ou de les refuser avec un motif.
-- Générer un reçu numérique avec un code de vérification unique après validation.
+## Périmètre et règles produit
 
-### Priorité Should
+### Inclus dans le MVP
 
-- Envoyer un email lors d’un changement de statut.
-- Filtrer les dossiers par type et par statut.
-- Permettre à l’agent de demander une pièce complémentaire.
-- Consulter l’historique d’un dossier.
-- Paramétrer le catalogue, les pièces demandées et les montants, si le temps le permet.
+- Une application web en français, utilisable sur smartphone.
+- Deux types de demandes : légalisation d’attestation et pré-inscription.
+- Dépôt de pièces justificatives, suivi du dossier et traitement par un agent.
+- Paiement Mobile Money simulé ou effectué dans un environnement de test.
 
-### Priorité Could
-
-- Envoyer des notifications par SMS.
-- Vérifier un document depuis son code de vérification.
-
-Les critères d’acceptation, les responsables, les dépendances et l’état d’avancement des US sont suivis dans Jira. Jira fait foi si une priorité ou une affectation change.
-
-## Hors périmètre du MVP
+### Hors périmètre
 
 - Paiement réel en production et remboursements automatiques.
 - Connexion aux systèmes internes de l’Université Marien Ngouabi.
-- Application mobile native : le produit est une application web à rendre utilisable sur smartphone.
+- Application mobile native.
 
-## Utilisateurs et rôles
+### Règles importantes
 
-- **Étudiant** : crée un compte, dépose et paie une demande, puis suit son dossier.
-- **Agent de scolarité** : consulte les dossiers payés, vérifie les pièces et traite les demandes.
-- **Administrateur produit** : configure le catalogue, les pièces demandées et les montants selon le périmètre livré.
+- Un dossier devient visible à l’agent après confirmation du paiement; un paiement échoué ne change pas son statut.
+- Un refus ou une demande de pièce complémentaire doit comporter un motif visible par l’étudiant.
+- Chaque changement de statut est horodaté et conservé dans l’historique.
+- Un étudiant ne consulte que ses propres dossiers; les pièces jointes ne sont pas publiques.
+- Le code de vérification d’un reçu est unique. Un dossier validé ou refusé n’est plus modifiable.
 
-## Organisation de l’équipe
+## Acteurs
 
-- **Product Manager** : porte la vision, priorise le produit et arbitre le périmètre avec la squad.
-- **Business Analyst** : maintient les exigences, les User Stories et leurs critères d’acceptation, puis contribue à la recette fonctionnelle.
-- **Développeurs** : conçoivent, développent, intègrent et vérifient les fonctionnalités.
-- **Repo admin** : gère les accès, les branches protégées et l’intégration GitHub. Ce rôle ne remplace pas les décisions produit de la squad.
+| Acteur | Responsabilité dans le produit |
+| --- | --- |
+| **Étudiant** | Crée un compte, consulte le catalogue, dépose et paie une demande, puis suit son dossier. |
+| **Agent de scolarité** | Consulte les dossiers payés, vérifie les pièces et valide, refuse ou demande un complément. |
+| **Administrateur produit** | Configure le catalogue, les pièces demandées et les montants selon les fonctionnalités livrées. |
 
-Les six développeurs se répartissent les US dans Jira. Signalez rapidement les blocages et les dépendances, notamment entre l’authentification et les demandes, entre le paiement et le traitement agent, ainsi qu’entre le reçu et son code de vérification.
+## Lancer le projet en local
+
+Le dépôt contient actuellement le README et le workflow GitHub Actions; le code de l’application et sa stack ne sont pas encore présents. Les prérequis, l’installation, les variables d’environnement et les commandes pour lancer et tester le produit seront ajoutés dès que le code sera intégré. Ne publiez jamais de secrets ou de données personnelles réelles dans le dépôt.
+
+## Structure du dépôt
+
+```text
+school-up-project/
+├── .github/
+│   └── workflows/
+│       └── main-source-branch.yml  Contrôle la branche source des PR vers main
+├── README.MD                      Présentation, périmètre et consignes d’équipe
+└── Code source de l’application   À intégrer
+```
 
 ## Méthode de travail
 
-L’équipe travaille en sprint court, avec synchronisation quotidienne et priorisation des US Must avant les Should et Could. Avant de commencer une US, vérifiez dans Jira son responsable, ses critères d’acceptation et ses dépendances. Si une exigence est ambiguë, faites-la clarifier avec le BA et le PM avant de figer l’implémentation.
+L’équipe travaille en sprint court avec un point quotidien de 15 minutes maximum : avancement, prochaine tâche et blocages. Priorisez les US **Must**, puis les **Should**; gardez les **Could** pour la fin si le temps le permet. Le Product Manager porte les priorités, le Business Analyst clarifie les exigences et critères d’acceptation, et les développeurs contribuent aux choix techniques et signalent rapidement les ambiguïtés.
 
-### Flux Git
+### Jira, branches et Pull Requests
 
-Les branches partagées sont `main` et `dev` :
+Une **US Jira** décrit le travail à faire et son suivi. Une **branche Git** est l’espace où le développeur réalise ce travail : ce sont deux éléments différents, reliés par la clé Jira.
+
+Les branches partagées du dépôt sont `main` et `dev` :
 
 1. Créez une branche courte depuis `dev` pour une US ou une fonctionnalité.
-2. Faites une Pull Request de cette branche vers `dev` pour l’intégration.
-3. Quand `dev` est prêt pour une livraison, ouvrez une Pull Request de `dev` vers `main`.
-4. Gardez `main` présentable et à jour ; ne poussez pas directement dessus.
+2. Ouvrez une Pull Request de cette branche vers `dev` pour intégrer le travail.
+3. Quand l’intégration est prête, ouvrez une Pull Request de `dev` vers `main`.
+4. N’envoyez pas directement de commit sur `main`.
 
-Nommez les branches avec la clé Jira, par exemple `feature/SUP-12-demande-legalisation` ou `fix/SUP-18-statut-paiement`. Remplacez `SUP` par la clé réelle de votre projet Jira.
+Nommez vos branches à partir de la clé Jira, par exemple `feature/SUP-12-demande-legalisation`. Remplacez `SUP` par la vraie clé du projet Jira. Les PR vers `main` doivent provenir de `dev`; le workflow du dépôt vérifie cette règle. Même sans approbation obligatoire, une vérification rapide par un coéquipier est recommandée lorsque le délai le permet.
 
-Exemple de création de branche :
+Exemple :
 
 ```bash
 git switch dev
@@ -77,28 +92,39 @@ git pull origin dev
 git switch -c feature/SUP-12-demande-legalisation
 ```
 
-Poussez votre branche et ouvrez ensuite une Pull Request vers `dev` :
+Après le développement :
 
 ```bash
+git add <fichier-modifie>
+git commit -m "feat(SUP-12): déposer une demande de légalisation"
 git push -u origin feature/SUP-12-demande-legalisation
 ```
 
-Dans le titre et la description de la PR, indiquez la clé Jira, ce qui a changé, comment vérifier le résultat et les éventuelles limites. Faites une vérification ciblée par un coéquipier lorsque le délai le permet. Ne fusionnez pas une fonctionnalité si elle casse le parcours déjà intégré.
+Reliez la PR à l’US Jira et décrivez les changements, les vérifications effectuées et les éventuelles limites. Utilisez des données fictives pour les tests et les démonstrations.
 
-Utilisez des commits descriptifs, par exemple :
+## Équipe et répartition des User Stories
 
-```text
-feat(SUP-12): déposer une demande de légalisation
-fix(SUP-18): conserver le statut après un paiement échoué
-```
+La squad comprend un Product Manager, un Business Analyst et six développeurs. La répartition ci-dessous reprend le document de sprint; Jira reste la référence pour les changements d’affectation.
 
-Ne commitez jamais de mot de passe, clé API, jeton ou fichier contenant des données personnelles réelles. Utilisez des données fictives pour les démonstrations.
+| Développeur | User Stories assignées | Points |
+| --- | --- | ---: |
+| **Beni NGASSAKI** | US3, US6 | 11 |
+| **Dubien NGASSAI NDONGO** | US5, US10 | 11 |
+| **Todd Gusman Hashall OKANA** | US1, US11, US15 | 12 |
+| **Dreche NDONGALA** | US2, US4, US12 | 13 |
+| **Ulrich ISSOKO** | US7, US8, US14 | 13 |
+| **Alty DELLOT-MVOUMINA** | US9, US13, US16 | 11 |
+| **Total** | **16 US** | **71** |
 
-## Technologies et démarrage
+### Dépendances à coordonner
 
-La stack technique et les commandes d’installation, de lancement et de test seront ajoutées ici dès que l’architecture du dépôt sera initialisée. Ne commitez aucune valeur secrète ; documentez les variables nécessaires dans un fichier `.env.example` sans valeur confidentielle.
+- L’US1 (compte) doit être disponible tôt pour les demandes US3 et US4.
+- Le paiement US5 doit s’accorder avec les dossiers traités par les US7 et US8.
+- Le reçu US9 et la vérification US13 doivent utiliser un format de code cohérent.
+- Les US3 et US5 sont les plus risquées dans la répartition; signalez leur blocage sans attendre.
+- Les US12, US13 et US16 sont à traiter en dernier si le temps le permet.
 
-## Liens
+## Liens utiles
 
-- **Backlog et suivi du sprint Jira** : à compléter avec le lien du projet Jira.
+- **Projet Jira** : ajouter le lien du board.
 - **Dépôt GitHub** : [school-up-project](https://github.com/Beningassaki/school-up-project)
