@@ -1,0 +1,120 @@
+.register-page,
+.register-page * { box-sizing: border-box; }
+
+.register-page {
+  --lp-blue: #0f73c6;
+  --lp-text: #0f1b2d;
+  --lp-muted: #64748b;
+  --lp-field: #f1f5fa;
+  --lp-error: #d93a3a;
+  --lp-success: #1e9e5a;
+
+  width: 100%;
+  min-height: 100vh;
+  padding: 28px 20px 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--lp-text);
+  text-align: left;
+  background:
+    radial-gradient(circle at 0% 0%, rgba(58, 160, 240, .18) 0, transparent 40%),
+    radial-gradient(circle at 100% 100%, rgba(15, 115, 198, .14) 0, transparent 45%),
+    #f6f9fd;
+}
+
+.register-top { width: 100%; max-width: 600px; display: flex; justify-content: space-between; align-items: center; }
+.register-top > a:last-child {
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--lp-text);
+  text-decoration: none;
+  background: #fff;
+  border-radius: 999px;
+  box-shadow: 0 1px 3px rgba(15, 27, 45, .1);
+}
+.register-top > a:last-child:hover { background: #f8fbff; }
+
+.register-card {
+  width: 100%;
+  max-width: 600px;
+  margin-top: 28px;
+  padding: clamp(24px, 5vw, 44px);
+  background: #fff;
+  border: 1px solid rgba(213, 222, 233, .7);
+  border-radius: 28px;
+  box-shadow: 0 30px 70px -30px rgba(10, 77, 140, .3);
+}
+.register-card h1 { margin: 0 0 8px; font-size: 32px; font-weight: 700; line-height: 1.1; letter-spacing: -.025em; }
+
+/* Barre de progression */
+.register-steps { display: flex; gap: 10px; margin: 28px 0 32px; padding: 0; list-style: none; }
+.register-steps li { flex: 1; display: flex; flex-direction: column; gap: 10px; font-size: 13px; color: #94a3b8; }
+.register-steps li::before { content: ''; height: 5px; background: #e5ecf5; border-radius: 99px; transition: background .3s; }
+.register-steps .num { display: none; }
+.register-steps li.actif { color: var(--lp-text); font-weight: 600; }
+.register-steps li.actif::before { background: var(--lp-blue); }
+.register-steps li.fait { color: var(--lp-muted); }
+.register-steps li.fait::before { background: var(--lp-success); }
+
+.register-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+/* Liste déroulante assortie aux champs */
+.register-card select {
+  width: 100%;
+  height: 52px;
+  padding: 0 44px 0 18px;
+  font: inherit;
+  color: var(--lp-text);
+  background: var(--lp-field) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 6l5 5 5-5'/%3E%3C/svg%3E") no-repeat right 16px center;
+  border: 1.5px solid transparent;
+  border-radius: 14px;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  transition: background-color .2s, border-color .2s, box-shadow .2s;
+}
+.register-card select:focus {
+  outline: none;
+  background-color: #fff;
+  border-color: var(--lp-blue);
+  box-shadow: 0 0 0 4px rgba(15, 115, 198, .14);
+}
+.register-card select[aria-invalid='true'] { background-color: #fff6f6; border-color: var(--lp-error); }
+
+.register-aide { margin: 8px 0 0; font-size: 13px; color: var(--lp-muted); }
+.register-cgu { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; font-size: 14px; color: #334155; }
+.register-cgu input { width: 18px; height: 18px; accent-color: var(--lp-blue); }
+
+.register-page .message-erreur { margin: 8px 0 0; font-size: 13px; color: var(--lp-error); }
+
+.register-actions { display: flex; gap: 12px; margin-top: 30px; }
+.register-actions .login-submit { margin-top: 0; }
+.register-retour {
+  flex: none;
+  height: 54px;
+  padding: 0 26px;
+  font: inherit;
+  font-weight: 600;
+  color: var(--lp-text);
+  background: var(--lp-field);
+  border: 0;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: background .2s;
+}
+.register-retour:hover { background: #e5ecf5; }
+
+@media (max-width: 640px) {
+  .register-row { grid-template-columns: 1fr; gap: 0; }
+  .register-card h1 { font-size: 26px; }
+  .register-steps li span:not(.num) { display: none; }
+  .register-steps li.actif span:not(.num) { display: inline; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .register-page * { transition: none !important; }
+}
