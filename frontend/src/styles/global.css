@@ -1,0 +1,83 @@
+/* =====================================================
+   STYLES PARTAGÉS : propriétaire ALTY
+   Chaque dev met le style de SES pages dans son propre
+   fichier (ex : LegalisationPage.css), pas ici.
+   ===================================================== */
+
+/* ---------- Variables : on change les couleurs ICI ---------- */
+:root {
+  --couleur-principale: #0b3d91;
+  --couleur-accent: #1b6b4f;
+  --fond: #f4f7fb;
+  --blanc: #ffffff;
+  --texte: #1c2733;
+  --texte-doux: #5b6b7c;
+  --bordure: #d9e1ec;
+  --succes: #1b7f4b;
+  --attention: #b7791f;
+  --danger: #c0392b;
+  --rayon: 10px;
+  --ombre: 0 2px 8px rgba(15, 40, 80, 0.08);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, Arial, sans-serif;
+  background: var(--fond);
+  color: var(--texte);
+  line-height: 1.5;
+}
+
+a { color: var(--couleur-principale); }
+h1 { margin-top: 0; }
+
+/* Conteneur centré : à utiliser dans toutes les pages */
+.container { max-width: 1100px; margin: 0 auto; padding: 1.5rem 1rem; }
+
+/* ---------- Barre de navigation ---------- */
+.navbar { background: var(--couleur-principale); color: var(--blanc); }
+.navbar__inner {
+  max-width: 1100px; margin: 0 auto; padding: 0.75rem 1rem;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 1rem;
+}
+.navbar__logo { font-weight: 700; font-size: 1.2rem; margin-right: auto; }
+.navbar a { color: var(--blanc); text-decoration: none; opacity: 0.85; }
+.navbar a:hover, .navbar a.active { opacity: 1; text-decoration: underline; }
+.navbar select { padding: 0.25rem; border-radius: 6px; }
+.footer { text-align: center; color: var(--texte-doux); padding: 1.5rem 1rem; font-size: 0.85rem; }
+
+/* ---------- Boutons ---------- */
+.btn {
+  display: inline-block; padding: 0.55rem 1.1rem; border: none; cursor: pointer;
+  border-radius: var(--rayon); background: var(--couleur-principale);
+  color: var(--blanc); font-size: 1rem; text-decoration: none;
+}
+.btn:hover { opacity: 0.9; }
+.btn--secondaire { background: var(--blanc); color: var(--couleur-principale); border: 1px solid var(--couleur-principale); }
+.btn--danger { background: var(--danger); }
+
+/* ---------- Cartes et grille ---------- */
+.card { background: var(--blanc); border: 1px solid var(--bordure); border-radius: var(--rayon); box-shadow: var(--ombre); padding: 1rem; }
+.grille { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
+
+/* ---------- Formulaires ---------- */
+.champ { display: flex; flex-direction: column; gap: 0.25rem; margin-bottom: 1rem; }
+.champ input, .champ select, .champ textarea {
+  padding: 0.6rem; border: 1px solid var(--bordure); border-radius: 8px; font-size: 1rem;
+}
+.message-erreur { color: var(--danger); background: #fdecea; padding: 0.6rem; border-radius: 8px; }
+
+/* ---------- Badges de statut (utilisés par StatusBadge) ---------- */
+.badge { display: inline-block; padding: 0.15rem 0.6rem; border-radius: 999px; font-size: 0.8rem; font-weight: 600; }
+.badge--brouillon { background: #e5e9f0; color: #44505e; }
+.badge--en_attente_paiement { background: #fff3cd; color: #8a6500; }
+.badge--paye { background: #d6e8ff; color: #0b3d91; }
+.badge--en_attente_complement { background: #ffe5cc; color: #a24b00; }
+.badge--valide { background: #d4f1e0; color: #1b7f4b; }
+.badge--refuse { background: #fbdcd8; color: #c0392b; }
+
+/* ---------- Page "à construire" (PagePlaceholder) ---------- */
+.placeholder { border: 2px dashed var(--bordure); border-radius: var(--rayon); padding: 1.5rem; background: var(--blanc); }
+.placeholder__us { color: var(--texte-doux); font-weight: 600; margin: 0 0 0.5rem; }
