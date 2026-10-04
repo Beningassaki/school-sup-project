@@ -1,0 +1,95 @@
+/* Style du reçu (US9) et de la vérification (US13) : propriétaire ALTY */
+.recu {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.recu__carte {
+  border-top: 6px solid var(--couleur-principale);
+}
+
+.recu__marque {
+  margin: 0;
+  color: var(--texte-doux);
+  font-size: 0.9rem;
+}
+
+.recu__lignes {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 0.5rem 1rem;
+  margin: 1rem 0;
+}
+
+.recu__lignes dt {
+  color: var(--texte-doux);
+}
+
+.recu__lignes dd {
+  margin: 0;
+  font-weight: 600;
+}
+
+.recu__code {
+  margin: 1rem 0;
+  padding: 1rem;
+  text-align: center;
+  border: 2px dashed var(--couleur-principale);
+  border-radius: var(--rayon);
+}
+
+.recu__code strong {
+  display: block;
+  font-family: monospace;
+  font-size: 1.6rem;
+  letter-spacing: 0.1em;
+}
+
+.recu__aide {
+  color: var(--texte-doux);
+  font-size: 0.85rem;
+  word-break: break-all;
+}
+
+.recu__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+/* Page de vérification (US13) */
+.verif {
+  max-width: 520px;
+  margin: 1rem auto;
+}
+
+.verif__ok {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #f2fbf6;
+  border: 1px solid var(--succes);
+  border-radius: var(--rayon);
+}
+
+.verif__ok h2 {
+  margin-top: 0;
+  color: var(--succes);
+}
+
+/* À l'impression : on cache le menu, le pied de page et les boutons */
+@media print {
+  .navbar,
+  .footer,
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+  }
+
+  .recu__carte {
+    box-shadow: none;
+  }
+}
