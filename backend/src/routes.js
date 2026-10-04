@@ -16,5 +16,7 @@ router.get(
 router.use('/formations', require('./modules/formations/formations.routes')); // US2
 // router.use('/auth', require('./modules/auth/auth.routes'));                // US1
 // router.use('/demandes', require('./modules/demandes/demandes.routes'));    // US3, US4
+router.use('/recus', require('./modules/recus/recus.routes')); // US9, US13 · Alty
+router.use('/suivi', require('./modules/suivi/historique.routes')); // US16 · Alty
 
 module.exports = router;
