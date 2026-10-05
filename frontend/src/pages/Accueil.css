@@ -30,6 +30,7 @@
 .accueil-eyebrow {
   display: inline-block;
   color: var(--accueil-vert);
+  font-family: Georgia, 'Times New Roman', serif;
   font-size: 0.78rem;
   font-weight: 750;
   letter-spacing: 0.09em;
