@@ -26,10 +26,6 @@ export default function Accueil() {
         </div>
         <div className="accueil-hero__visual">
           <img src="/umng-campus.jpg" alt="Entrée de la Faculté des lettres, arts et sciences humaines de l’Université Marien Ngouabi" />
-          <div className="accueil-visual-card" aria-hidden="true">
-            <span className="accueil-visual-card__icon">✦</span>
-            <span><strong>Vos démarches</strong><small>simples et accessibles</small></span>
-          </div>
         </div>
       </section>
 
