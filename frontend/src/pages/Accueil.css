@@ -80,7 +80,7 @@
 .accueil-hero__note-icon { display: grid; width: 21px; height: 21px; place-items: center; border-radius: 50%; background: #e3f2e9; color: var(--accueil-vert); font-size: 0.75rem; font-weight: 800; }
 
 .accueil-hero__visual { position: relative; min-width: 0; }
-.accueil-hero__visual > img { display: block; width: 100%; height: auto; border-radius: 24px; }
+.accueil-hero__visual > img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: center 52%; border-radius: 24px; }
 .accueil-visual-card {
   position: absolute;
   right: -1rem;
