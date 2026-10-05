@@ -51,6 +51,8 @@ export default function App() {
           <Route path="/mes-demandes/:id/historique" element={<HistoriquePage />} /> {/* US16 · Alty */}
           <Route path="/mes-demandes/:id/recu" element={<RecuPage />} /> {/* US9 · Alty */}
         </Route>
+ 
+ <Route path="/connexion" element={<LoginPage />} />
 
         {/* ===== ESPACE AGENT ===== */}
         <Route element={<ProtectedRoute roles={['agent']} />}>
