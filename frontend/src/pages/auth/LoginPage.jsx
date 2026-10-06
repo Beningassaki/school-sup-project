@@ -14,13 +14,13 @@
 // =====================================================
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { useAuth } from '../../context/AuthContext.jsx'; // ⚠️ garde ton chemin corrigé
+import { api } from '../../services/api.js';
 import './LoginPage.css';
 
 // ⚠️ garde tes vraies routes
 const ACCUEIL_PAR_ROLE = {
-  etudiant: '/tableau-de-bord',
+  etudiant: '/mes-demandes',
   agent: '/agent/dossiers',
   admin: '/admin',
 };
@@ -54,9 +54,9 @@ export default function LoginPage() {
 
     setChargement(true);
     try {
-      const { data } = await axios.post('/api/auth/login', {
+      const data = await api.post('/auth/login', {
         email: email.trim(),
-        motDePasse, // ⚠️ confirmer le nom du champ avec le backend
+        motDePasse,
       });
       login(data.token, data.user);
       navigate(ACCUEIL_PAR_ROLE[data.user.role] || '/', { replace: true });

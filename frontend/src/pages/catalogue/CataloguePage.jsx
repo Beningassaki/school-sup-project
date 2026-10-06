@@ -38,7 +38,7 @@ export default function CataloguePage() {
             <p>{f.faculte} · {f.niveau}</p>
             <p>{f.conditions}</p>
             <p><strong>Frais : {f.frais} FCFA</strong></p>
-            <Link className="btn" to="/demandes/nouvelle/pre-inscription">Me pré-inscrire</Link>
+            <Link className="btn" to={`/demandes/nouvelle/pre-inscription?formation=${f.id}`}>Me pré-inscrire</Link>
           </article>
         ))}
       </div>
