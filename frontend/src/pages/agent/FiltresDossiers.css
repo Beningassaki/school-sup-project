@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+.filtres,
+.filtres * { box-sizing: border-box; }
+
+.filtres {
+  --f-blue: #0f73c6;
+  --f-text: #0f1b2d;
+  --f-field: #f1f5fa;
+
+  padding: 20px;
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 14px;
+  color: var(--f-text);
+  text-align: left;
+  background: #fff;
+  border: 1px solid rgba(213, 222, 233, .7);
+  border-radius: 20px;
+  box-shadow: 0 20px 50px -30px rgba(10, 77, 140, .3);
+}
+
+.filtres-grille { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 14px; }
+
+.filtres-champ label { display: block; margin-bottom: 6px; font-size: 13px; font-weight: 600; color: #334155; }
+
+.filtres-champ input,
+.filtres-champ select {
+  width: 100%;
+  height: 46px;
+  padding: 0 16px;
+  font: inherit;
+  color: var(--f-text);
+  background-color: var(--f-field);
+  border: 1.5px solid transparent;
+  border-radius: 12px;
+  transition: background-color .2s, border-color .2s, box-shadow .2s;
+}
+.filtres-champ input::placeholder { color: #94a3b8; }
+.filtres-champ input:hover,
+.filtres-champ select:hover { background-color: #eaf0f8; }
+.filtres-champ input:focus,
+.filtres-champ select:focus {
+  outline: none;
+  background-color: #fff;
+  border-color: var(--f-blue);
+  box-shadow: 0 0 0 4px rgba(15, 115, 198, .14);
+}
+
+.filtres-champ select {
+  padding-right: 40px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 6l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+
+.filtres-pied { display: flex; justify-content: flex-end; margin-top: 14px; }
+.filtres-reset {
+  height: 36px;
+  padding: 0 16px;
+  font: inherit;
+  font-weight: 600;
+  color: var(--f-blue);
+  background: #eef5fc;
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.filtres-reset:hover { background: #dfecf9; }
+
+@media (max-width: 760px) {
+  .filtres-grille { grid-template-columns: 1fr; }
+}

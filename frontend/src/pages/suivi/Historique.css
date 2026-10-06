@@ -1,0 +1,48 @@
+/* Style de l'historique (US16) : propriétaire ALTY */
+.historique {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.chrono {
+  margin: 1rem 0;
+  padding: 0;
+  list-style: none;
+  border-left: 3px solid var(--bordure);
+}
+
+.chrono__etape {
+  position: relative;
+  padding: 0 0 1.25rem 1.25rem;
+}
+
+.chrono__etape::before {
+  content: '';
+  position: absolute;
+  left: -9px;
+  top: 0.3rem;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: var(--couleur-principale);
+  border: 3px solid var(--fond);
+}
+
+.chrono__titre {
+  margin: 0 0 0.25rem;
+  color: var(--texte-doux);
+  font-size: 0.85rem;
+}
+
+.chrono__date {
+  margin: 0.25rem 0 0;
+  color: var(--texte-doux);
+  font-size: 0.85rem;
+}
+
+.chrono__motif {
+  margin: 0.4rem 0 0;
+  padding: 0.5rem 0.75rem;
+  background: #fff3cd;
+  border-radius: 8px;
+}

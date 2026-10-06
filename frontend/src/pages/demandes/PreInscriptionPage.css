@@ -1,0 +1,606 @@
+@scope (.preinscription-page) {
+/* =====================================================
+   PRE-INSCRIPTION
+   ===================================================== */
+
+:scope {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  min-height: 100vh;
+  background: #f5f8f6;
+  color: #253f37;
+}
+
+.preinscription-container {
+  width: min(1180px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 42px 0 70px;
+}
+
+.preinscription-state {
+  min-height: 60vh;
+  display: grid;
+  place-items: center;
+  color: #667a73;
+  font-size: 15px;
+}
+
+.preinscription-state.error {
+  color: #a33d3d;
+}
+
+/* Retour */
+
+.page-back {
+  margin-bottom: 28px;
+}
+
+.page-back button,
+.page-back a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 0;
+  background: transparent;
+  color: #126b55;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* En-tête */
+
+.page-eyebrow {
+  margin-bottom: 12px;
+  color: #126b55;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.preinscription-container h1 {
+  margin: 0;
+  color: #18382f;
+  font-size: clamp(32px, 4vw, 46px);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.page-intro {
+  max-width: 720px;
+  margin: 14px 0 32px;
+  color: #71817b;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+/* Progression */
+
+.preinscription-progress {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  margin: 34px 0 10px;
+}
+
+.progress-step {
+  position: relative;
+  min-width: 0;
+}
+
+.progress-step-top {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  position: relative;
+  z-index: 2;
+  color: #89958f;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.progress-circle {
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #e5ece8;
+  color: #71817b;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.progress-step.active .progress-step-top,
+.progress-step.completed .progress-step-top {
+  color: #126b55;
+}
+
+.progress-step.active .progress-circle,
+.progress-step.completed .progress-circle {
+  background: #126b55;
+  color: white;
+}
+
+.progress-line {
+  position: absolute;
+  top: 14px;
+  left: 30px;
+  right: 0;
+  height: 2px;
+  background: #dce5e0;
+  z-index: 1;
+}
+
+.progress-step.completed .progress-line {
+  background: #126b55;
+}
+
+.progress-caption {
+  margin: 12px 0 30px;
+  color: #89958f;
+  font-size: 12px;
+}
+
+/* Layout */
+
+.step-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 330px;
+  gap: 28px;
+  align-items: start;
+}
+
+.card,
+.choice-card,
+.concerned-card {
+  padding: 28px;
+  border: 1px solid #e0e9e4;
+  border-radius: 16px;
+  background: white;
+  box-shadow: 0 8px 30px rgba(25, 61, 48, 0.04);
+}
+
+.card + .card {
+  margin-top: 20px;
+}
+
+.card h2,
+.choice-card h2,
+.concerned-card h2 {
+  margin: 0 0 24px;
+  color: #203f36;
+  font-size: 19px;
+}
+
+/* Formulaire */
+
+.form-grid {
+  display: grid;
+  gap: 20px;
+}
+
+.form-grid.two-columns {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.form-field {
+  display: block;
+  margin-bottom: 18px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 8px;
+  color: #314b43;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.form-label span {
+  color: #126b55;
+}
+
+.form-field input,
+.form-field select {
+  width: 100%;
+  height: 50px;
+  box-sizing: border-box;
+  border: 1px solid #d5e1db;
+  border-radius: 10px;
+  background: white;
+  color: #253f37;
+  padding: 0 14px;
+  font: inherit;
+  outline: none;
+}
+
+.form-field input:focus,
+.form-field select:focus {
+  border-color: #126b55;
+  box-shadow: 0 0 0 3px rgba(18, 107, 85, 0.08);
+}
+
+.select-wrapper {
+  position: relative;
+}
+
+.select-wrapper select {
+  appearance: none;
+  padding-right: 42px;
+}
+
+.select-wrapper svg {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #71817b;
+}
+
+.input-with-icon {
+  position: relative;
+}
+
+.input-with-icon input {
+  padding-right: 44px;
+}
+
+.input-with-icon svg {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #71817b;
+  pointer-events: none;
+}
+
+.required-note {
+  margin: 4px 0 0;
+  color: #89958f;
+  font-size: 12px;
+}
+
+/* Résumés */
+
+.summary-row {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 14px;
+  padding-bottom: 14px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid #edf2ef;
+}
+
+.summary-row:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.summary-row span {
+  color: #82908a;
+  font-size: 12px;
+}
+
+.summary-row strong {
+  color: #29483e;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Boutons */
+
+.step-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.primary-button,
+.secondary-button,
+.draft-button {
+  min-height: 48px;
+  padding: 0 18px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.primary-button {
+  border: 1px solid #126b55;
+  background: #126b55;
+  color: white;
+}
+
+.secondary-button {
+  border: 1px solid #d5e1db;
+  background: white;
+  color: #29483e;
+}
+
+.draft-button {
+  border: 1px solid transparent;
+  background: transparent;
+  color: #71817b;
+}
+
+/* Cartes latérales */
+
+.choice-card {
+  margin-bottom: 18px;
+}
+
+.choice-card a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 20px;
+  color: #126b55;
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.warning-card,
+.info-banner,
+.security-banner,
+.success-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 15px;
+  border-radius: 12px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.warning-card {
+  background: #fff8e8;
+  border: 1px solid #f0dfb2;
+  color: #796329;
+}
+
+.warning-card p {
+  margin: 0;
+}
+
+.info-banner {
+  margin-bottom: 20px;
+  background: #edf5f1;
+  color: #4e685f;
+}
+
+.security-banner {
+  margin-top: 20px;
+  background: #f4f7f5;
+  color: #667a73;
+}
+
+.success-banner {
+  margin-top: 18px;
+  background: #eaf4ef;
+  color: #126b55;
+  font-weight: 700;
+}
+.form-error {
+  margin-top: 18px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: #fff0f0;
+  border: 1px solid #f0caca;
+  color: #a33d3d;
+  font-size: 13px;
+}
+
+.form-field > input {
+  width: 100%;
+  height: 54px;
+  box-sizing: border-box;
+  border: 1px solid #d5e1db;
+  border-radius: 10px;
+  background: white;
+  color: #253f37;
+  padding: 0 14px;
+  font: inherit;
+  outline: none;
+}
+
+.form-field > input:focus {
+  border-color: #126b55;
+  box-shadow: 0 0 0 3px rgba(18, 107, 85, 0.08);
+}
+
+.payment-progress {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.payment-progress-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #71817b;
+  font-size: 14px;
+}
+
+.payment-progress-title span {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #edf3ef;
+}
+
+.payment-progress-item.active .payment-progress-title,
+.payment-progress-item.completed .payment-progress-title {
+  color: #126b55;
+  font-weight: 800;
+}
+
+.payment-progress-item.active .payment-progress-title span,
+.payment-progress-item.completed .payment-progress-title span {
+  color: white;
+  background: #126b55;
+}
+
+.payment-progress-line {
+  height: 3px;
+  margin-top: 10px;
+  background: #dce6e1;
+}
+
+.payment-progress-item.active .payment-progress-line,
+.payment-progress-item.completed .payment-progress-line {
+  background: #126b55;
+}
+
+.payment-validation-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 330px;
+  gap: 28px;
+  align-items: start;
+}
+
+.validation-card {
+  min-height: 360px;
+}
+
+.validation-icon,
+.confirmation-icon {
+  width: 62px;
+  height: 62px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  background: #eaf4ef;
+  color: #126b55;
+  margin-bottom: 24px;
+}
+
+.validation-card > p {
+  color: #71817b;
+  line-height: 1.6;
+}
+
+.validation-summary {
+  margin: 28px 0;
+  padding: 20px;
+  border-radius: 12px;
+  background: #f7faf8;
+}
+
+.validation-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.confirmation-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 330px;
+  gap: 28px;
+  align-items: start;
+}
+
+.confirmation-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.status-badge {
+  background: #eaf4ef;
+  color: #126b55;
+  padding: 9px 14px;
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.confirmation-details {
+  margin-top: 28px;
+}
+
+.confirmation-details .summary-row {
+  grid-template-columns: 170px 1fr;
+  margin-bottom: 22px;
+}
+
+.next-card {
+  padding: 26px;
+  margin-top: 20px;
+  border-radius: 16px;
+  background: #eaf4ef;
+}
+
+.next-card h2 {
+  margin: 0 0 16px;
+}
+
+.next-card p {
+  margin: 0;
+  color: #667a73;
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+.confirmation-actions {
+  display: flex;
+  gap: 14px;
+  margin-top: 24px;
+}
+
+button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+@media (max-width: 900px) {
+  .payment-validation-layout,
+  .confirmation-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .payment-progress {
+    grid-template-columns: 1fr;
+  }
+
+  .payment-progress-line {
+    display: none;
+  }
+
+  .validation-actions,
+  .confirmation-actions {
+    flex-direction: column;
+  }
+
+  .validation-actions button,
+  .confirmation-actions a,
+  .confirmation-actions button {
+    width: 100%;
+  }
+
+  .confirmation-details .summary-row {
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
+}
+}
