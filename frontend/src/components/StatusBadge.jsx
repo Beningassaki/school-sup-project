@@ -1,18 +1,18 @@
-// PROTÈGE UN GROUPE DE ROUTES : il faut être connecté, avec le bon rôle
-// Utilisation (dans App.jsx) : <Route element={<ProtectedRoute roles={['agent']} />}>
-// Propriétaire : ALTY
-import { Navigate, Outlet, useLocation } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext.jsx';
+const statuts = {
+  brouillon: { libelle: 'Brouillon', classe: 'brouillon' },
+  en_attente_paiement: { libelle: 'En attente de paiement', classe: 'en_attente_paiement' },
+  paye: { libelle: 'En traitement', classe: 'paye' },
+  en_attente_complement: { libelle: 'Complément demandé', classe: 'en_attente_complement' },
+  valide: { libelle: 'Acceptée', classe: 'valide' },
+  refuse: { libelle: 'Refusée', classe: 'refuse' },
+  en_traitement: { libelle: 'En traitement', classe: 'paye' },
+  acceptee: { libelle: 'Acceptée', classe: 'valide' },
+  refusee: { libelle: 'Refusée', classe: 'refuse' },
+};
 
-export default function ProtectedRoute({ roles }) {
-  const { user } = useAuth();
-  const location = useLocation();
+export default function StatusBadge({ statut }) {
+  const valeur = String(statut || '').toLowerCase();
+  const configuration = statuts[valeur] || { libelle: valeur || 'Inconnu', classe: 'brouillon' };
 
-  // Pas connecté : direction la page de connexion
-  if (!user) return <Navigate to="/connexion" state={{ depuis: location }} replace />;
-
-  // Connecté mais mauvais rôle : retour à l'accueil
-  if (roles && !roles.includes(user.role)) return <Navigate to="/" replace />;
-
-  return <Outlet />;
+  return <span className={`badge badge--${configuration.classe}`}>{configuration.libelle}</span>;
 }
