@@ -62,7 +62,7 @@ export default function LoginPage() {
       navigate(ACCUEIL_PAR_ROLE[data.user.role] || '/', { replace: true });
     } catch (err) {
       setErreurServeur(
-        err.response?.status === 401
+        err.status === 401
           ? 'Email ou mot de passe incorrect.'
           : 'Connexion impossible pour le moment. Réessayez plus tard.'
       );

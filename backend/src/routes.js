@@ -20,5 +20,6 @@ router.use('/paiements', require('./modules/paiements/paiements.routes')); // US
 router.use('/recus', require('./modules/recus/recus.routes')); // US9, US13 · Alty
 router.use('/suivi', require('./modules/suivi/suivi.routes')); // US6
 router.use('/suivi', require('./modules/suivi/historique.routes')); // US16 · Alty
+router.use('/agent', require('./modules/agent/agent.routes')); // US7, US8, US14
 
 module.exports = router;

@@ -19,8 +19,7 @@ const TYPES = [
 // ⚠️ À confirmer avec Ulrich et le backend : valeurs exactes des statuts
 const STATUTS = [
   { valeur: 'paye', libelle: 'Payé' },
-  { valeur: 'en_verification', libelle: 'En vérification' },
-  { valeur: 'complement', libelle: 'Complément demandé' },
+  { valeur: 'en_attente_complement', libelle: 'Complément demandé' },
   { valeur: 'valide', libelle: 'Validé' },
   { valeur: 'refuse', libelle: 'Refusé' },
 ];
@@ -29,7 +28,10 @@ export default function FiltresDossiers({ onChange }) {
   const [filtres, setFiltres] = useState(VIDE);
   const dernierEnvoi = useRef(JSON.stringify(VIDE));
   const surChangement = useRef(onChange);
-  surChangement.current = onChange;
+
+  useEffect(() => {
+    surChangement.current = onChange;
+  }, [onChange]);
 
   // Prévient le parent 300 ms après le dernier changement (évite un appel API à chaque lettre)
   useEffect(() => {
