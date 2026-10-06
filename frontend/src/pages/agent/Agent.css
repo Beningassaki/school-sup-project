@@ -1,0 +1,179 @@
+/* Style de l'espace agent : menu latéral, compteurs, tableaux */
+.agent {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.agent .agent-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.75rem;
+  background: var(--blanc);
+  border: 1px solid var(--bordure);
+  border-radius: var(--rayon);
+}
+
+.agent .agent-menu a {
+  padding: 0.55rem 0.75rem;
+  color: var(--texte);
+  text-decoration: none;
+  border-radius: 8px;
+}
+
+.agent .agent-menu a:hover {
+  background: var(--fond);
+}
+
+.agent .agent-menu a.actif {
+  background: var(--couleur-principale);
+  color: var(--blanc);
+}
+
+.agent .agent-contenu {
+  min-width: 0; /* permet au tableau de défiler au lieu de déborder */
+}
+
+.agent .stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.agent .stat {
+  padding: 1rem;
+  text-align: center;
+  background: var(--blanc);
+  border: 1px solid var(--bordure);
+  border-radius: var(--rayon);
+}
+
+.agent .stat strong {
+  display: block;
+  font-size: 2rem;
+  color: var(--couleur-principale);
+}
+
+.agent .tableau-defilant {
+  overflow-x: auto;
+}
+
+.agent .table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--blanc);
+}
+
+.agent .table th,
+.agent .table td {
+  padding: 0.6rem 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--bordure);
+}
+
+.agent .table th {
+  color: var(--texte-doux);
+  font-size: 0.85rem;
+}
+
+.agent .pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.agent .detail {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.agent .detail dl {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 0.4rem 1rem;
+  margin: 0;
+}
+
+.agent .detail dt {
+  color: var(--texte-doux);
+}
+
+.agent .detail dd {
+  margin: 0;
+  font-weight: 600;
+  word-break: break-word;
+}
+
+.agent .piece-agent {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--bordure);
+}
+
+.agent .piece-agent__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.agent .btn--petit {
+  padding: 0.3rem 0.7rem;
+  font-size: 0.85rem;
+}
+
+.agent .historique-agent {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+/* Sur téléphone : le menu passe au-dessus du contenu */
+@media (max-width: 800px) {
+  .agent {
+    grid-template-columns: 1fr;
+  }
+
+  .agent .agent-menu {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+/* ---------- Actions de traitement d'un dossier (US8 et US14) ---------- */
+.agent .info-ok {
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  background: #f2fbf6;
+  border: 1px solid var(--succes);
+  border-radius: var(--rayon);
+}
+
+.agent .actions-dossier {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.agent .formulaire-action {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--bordure);
+}
+
+.agent .formulaire-action textarea {
+  width: 100%;
+}
+
+.agent .complement-motif {
+  max-width: 280px;
+}
