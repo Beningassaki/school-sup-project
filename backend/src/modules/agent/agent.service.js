@@ -21,8 +21,15 @@ const TYPES = ['legalisation', 'pre_inscription'];
 // ⚠️ À garder identique aux pièces du module demandes (demandes.pieces.js).
 const PIECES_REQUISES = {
   pre_inscription: ['Diplôme du baccalauréat', 'Relevé de notes', 'Pièce d’identité'],
-  legalisation: ["Pièce d'identité", 'Attestation à légaliser'],
+  legalisation: ['Pièce d’identité', 'Attestation à légaliser'],
 };
+
+function piecesRequisesPour(type, informations = {}) {
+  if (type === 'legalisation') {
+    return [informations.typeDocument || 'Attestation à légaliser', 'Pièce d’identité'];
+  }
+  return PIECES_REQUISES[type] ?? [];
+}
 
 const RACINE_BACKEND = path.join(__dirname, '..', '..', '..');
 const RACINE_UPLOADS = path.join(RACINE_BACKEND, 'uploads');
@@ -48,7 +55,7 @@ async function enTransaction(travail) {
 // Verrouille le dossier et vérifie qu'il est bien "paye" (le seul état traitable)
 async function verrouillerDossierPaye(client, demandeId) {
   const { rows } = await client.query(
-    'SELECT id, type, statut FROM requests WHERE id = $1 FOR UPDATE',
+    'SELECT id, type, statut, informations FROM requests WHERE id = $1 FOR UPDATE',
     [demandeId],
   );
   // 404 aussi pour un brouillon ou un dossier non payé : l'agent ne doit pas les voir
@@ -135,7 +142,8 @@ async function lister({ statut = 'paye', type, recherche, page = 1, limite = 10 
   const compte = await pool.query(`SELECT COUNT(*)::int AS total ${base}`, valeurs);
 
   const { rows } = await pool.query(
-    `SELECT r.id, r.reference, r.type, r.statut, r.motif, r.montant, r.created_at, r.updated_at,
+    `SELECT r.id, r.reference, r.type, r.statut, r.motif, r.montant, r.informations,
+            r.created_at, r.updated_at,
             u.nom, u.prenom, f.filiere,
             (SELECT COUNT(*)::int FROM documents d WHERE d.request_id = r.id) AS documents_fournis
      ${base}
@@ -148,7 +156,7 @@ async function lister({ statut = 'paye', type, recherche, page = 1, limite = 10 
     elements: rows.map(({ nom, prenom, ...dossier }) => ({
       ...dossier,
       etudiant: { nom, prenom },
-      documents_requis: PIECES_REQUISES[dossier.type].length,
+      documents_requis: piecesRequisesPour(dossier.type, dossier.informations).length,
     })),
     total: compte.rows[0].total,
     page,
@@ -159,7 +167,7 @@ async function lister({ statut = 'paye', type, recherche, page = 1, limite = 10 
 // ---------- US7 : détail d'un dossier ----------
 async function detail(demandeId) {
   const dossier = await pool.query(
-    `SELECT r.id, r.reference, r.type, r.statut, r.motif, r.montant, r.created_at,
+    `SELECT r.id, r.reference, r.type, r.statut, r.motif, r.montant, r.informations, r.created_at,
             f.faculte, f.filiere, u.nom, u.prenom, u.email, u.telephone
      FROM requests r
      JOIN users u ON u.id = r.student_id
@@ -194,7 +202,7 @@ async function detail(demandeId) {
     [demandeId],
   );
 
-  const piecesRequises = PIECES_REQUISES[infos.type];
+  const piecesRequises = piecesRequisesPour(infos.type, infos.informations);
   return {
     dossier: { ...infos, documents_requis: piecesRequises.length },
     pieces_requises: piecesRequises,
@@ -257,7 +265,7 @@ async function valider(demandeId, agentId) {
       [demandeId],
     );
     const details = [
-      ...PIECES_REQUISES[dossier.type]
+      ...piecesRequisesPour(dossier.type, dossier.informations)
         .filter((piece) => !pieces.some((p) => p.type_piece === piece))
         .map((piece) => ({ champ: 'documents', message: `Pièce manquante : ${piece}` })),
       ...pieces
@@ -303,7 +311,7 @@ async function demanderComplement(demandeId, agentId, { type_piece: typePiece, m
     const dossier = await verrouillerDossierPaye(client, demandeId);
 
     // La pièce demandée doit faire partie des pièces de cette démarche
-    if (!PIECES_REQUISES[dossier.type].includes(typePiece)) {
+    if (!piecesRequisesPour(dossier.type, dossier.informations).includes(typePiece)) {
       throw new AppError("Cette pièce n'est pas demandée pour cette démarche", 400);
     }
 

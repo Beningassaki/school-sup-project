@@ -6,7 +6,7 @@
 // =====================================================
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { api } from '../../services/api.js';
 import './LoginPage.css';
 import './RegisterPage.css';
 
@@ -65,7 +65,7 @@ export default function RegisterPage() {
 
     setChargement(true);
     try {
-      await axios.post('/api/auth/register', {
+      await api.post('/auth/register', {
         nom: f.nom.trim(),
         prenom: f.prenom.trim(),
         dateNaissance: f.dateNaissance,
@@ -76,11 +76,13 @@ export default function RegisterPage() {
       });
       navigate('/connexion', { state: { inscrit: true } });
     } catch (err) {
-      if (err.response?.status === 409) {
-        setErreurServeur('Un compte existe déjà avec cet email ou ce numéro.');
+      if (err.status === 409) {
+        setErreurServeur(err.message || 'Un compte existe déjà avec cet email.');
         setEtape(1);
+      } else if (err.status === 400) {
+        setErreurServeur(err.details?.[0]?.message || err.message || 'Vérifiez les informations saisies.');
       } else {
-        setErreurServeur("Création du compte impossible pour le moment. Réessayez plus tard.");
+        setErreurServeur(err.message || "Création du compte impossible pour le moment. Réessayez plus tard.");
       }
     } finally {
       setChargement(false);
