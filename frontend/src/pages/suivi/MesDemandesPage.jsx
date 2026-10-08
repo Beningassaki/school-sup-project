@@ -432,7 +432,7 @@ export default function MesDemandesPage() {
         </div>
 
         <Link
-          to="/formations"
+          to="/demandes/nouvelle"
           className="mes-demandes__new"
         >
           + Nouvelle demande

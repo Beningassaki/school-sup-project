@@ -269,6 +269,27 @@ Les routes disponibles dépendent du code fusionné; une page encore en construc
 
 Les comptes présents dans le seed sont fictifs, réservés à la base de test et ne doivent jamais être utilisés en production. Consultez backend/database/seed.sql pour les identifiants courants.
 
+### Déploiement sur Render et Neon
+
+Le frontend et l'API sont deux services distincts sur Render; Neon héberge PostgreSQL. Ne poussez jamais de fichier `.env` ni de secret dans Git.
+
+1. Dans Neon, créez un projet et copiez la chaîne de connexion PostgreSQL. Utilisez une URL qui contient `sslmode=require` et gardez-la secrète.
+2. Sur Render, créez un **Web Service** relié au dépôt :
+   - Root Directory : `backend`
+   - Build Command : `npm ci`
+   - Start Command : `npm start`
+   - Variables d'environnement : `NODE_ENV=production`, `DATABASE_URL` (URL Neon), `JWT_SECRET` (secret aléatoire), `CORS_ORIGIN` (URL de votre site frontend Render, sans `/` final).
+3. Appliquez les migrations à la base Neon avec `npm run db:migrate`, depuis `backend`, avant d'utiliser l'application. Si votre offre Render propose une commande **Pre-Deploy**, configurez-la avec `npm run db:migrate`; sinon lancez la migration localement avec `DATABASE_URL` temporairement défini dans l'environnement du terminal. N'exécutez pas le seed de démonstration sur une base de production.
+4. Sur Render, créez un **Static Site** relié au même dépôt :
+   - Root Directory : `frontend`
+   - Build Command : `npm ci && npm run build`
+   - Publish Directory : `dist`
+   - Variable d'environnement de build : `VITE_API_URL=https://<nom-du-service-api>.onrender.com/api`
+   - Ajoutez une règle de réécriture `/*` vers `/index.html` pour les routes gérées par React Router.
+5. Une fois le Static Site créé, remplacez `CORS_ORIGIN` du service backend par son URL Render exacte, puis redéployez l'API. Vérifiez `https://<nom-du-service-api>.onrender.com/api/health`.
+
+Le backend accepte `DATABASE_URL` pour Neon et conserve les variables `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER` et `DB_PASSWORD` pour l'exécution locale. Le système de fichiers local d'un service Render n'est pas un stockage permanent : ne comptez pas dessus pour conserver des fichiers téléversés après un redémarrage ou un redéploiement.
+
 ## 9. Workflow GitHub
 
 ### Branches
