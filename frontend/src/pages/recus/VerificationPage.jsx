@@ -56,7 +56,10 @@ export default function VerificationPage() {
   return (
     <section className="card verif">
       <h1>Vérifier un document</h1>
-      <p>Saisissez le code figurant sur le reçu (exemple : SS-REC-7F3K9Q).</p>
+      <p>
+        Saisissez le code de vérification du reçu (SS-REC-XXXXXX) ou la référence
+        affichée dans « Mes demandes » (SS-AAAA-...).
+      </p>
 
       <form onSubmit={soumettre}>
         <div className="champ">
@@ -68,7 +71,7 @@ export default function VerificationPage() {
               setCode(e.target.value);
               setErreur(''); // l'erreur disparaît dès que l'utilisateur modifie le champ
             }}
-            placeholder="SS-REC-XXXXXX"
+            placeholder="Code du reçu ou référence de demande"
             autoComplete="off"
           />
         </div>
