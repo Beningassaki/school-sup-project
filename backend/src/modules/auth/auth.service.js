@@ -4,6 +4,31 @@ const pool = require('../../config/db');
 const env = require('../../config/env');
 const AppError = require('../../utils/AppError');
 
+async function inscrire({ nom, prenom, dateNaissance, nationalite, email, telephone, motDePasse }) {
+  const emailNormalise = email.trim().toLowerCase();
+  const existant = await pool.query(
+    'SELECT id FROM users WHERE LOWER(email) = $1',
+    [emailNormalise],
+  );
+  if (existant.rows[0]) throw new AppError('Un compte existe déjà avec cet email.', 409);
+
+  const passwordHash = await bcrypt.hash(motDePasse, 12);
+  try {
+    const { rows } = await pool.query(
+      `INSERT INTO users (nom, prenom, email, telephone, password_hash, date_naissance, nationalite)
+       VALUES ($1, $2, $3, $4, $5, $6, $7)
+       RETURNING id, nom, prenom, email, telephone, date_naissance, nationalite, role, created_at`,
+      [nom, prenom, emailNormalise, telephone, passwordHash, dateNaissance, nationalite],
+    );
+    return rows[0];
+  } catch (erreur) {
+    if (erreur.code === '23505') {
+      throw new AppError('Un compte existe déjà avec cet email.', 409);
+    }
+    throw erreur;
+  }
+}
+
 async function connexion({ email, motDePasse }) {
   const { rows } = await pool.query(
     `SELECT id, nom, prenom, email, role, password_hash
@@ -35,4 +60,4 @@ async function connexion({ email, motDePasse }) {
   return { token, user };
 }
 
-module.exports = { connexion };
+module.exports = { inscrire, connexion };
