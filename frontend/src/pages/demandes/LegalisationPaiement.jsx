@@ -56,10 +56,10 @@ export default function LegalisationPaiement({
        * Paiement uniquement pour la légalisation
        */
       const response = await api.post(
-        '/paiements/legalisation',
+        '/paiements',
         {
           demandeId: Number(demandeId),
-          operateur,
+          operateur: operateur === 'AIRTEL' ? 'Airtel' : operateur,
           telephone: telephone.trim(),
           montant: Number(montant),
           simulation: 'confirme',

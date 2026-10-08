@@ -15,6 +15,7 @@ const ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 const LONGUEUR_CODE = 6;
 const MAX_ESSAIS = 5;
 const FORMAT_CODE = /^SS-REC-[A-Z0-9]{6}$/;
+const FORMAT_REFERENCE = /^SS-\d{4}-[A-F0-9]{20}$/;
 
 // Fabrique un code aléatoire : SS-REC-7F3K9Q
 // crypto.randomInt est imprévisible (contrairement à Math.random)
@@ -98,7 +99,9 @@ async function verifierCode(codeSaisi) {
   const code = String(codeSaisi).trim().toUpperCase();
 
   // Format invalide = même réponse que "code inconnu"
-  if (!FORMAT_CODE.test(code)) throw new AppError('Code inconnu', 404);
+  if (!FORMAT_CODE.test(code) && !FORMAT_REFERENCE.test(code)) {
+    throw new AppError('Code inconnu', 404);
+  }
 
   const { rows } = await pool.query(
     `SELECT r.reference, r.type, u.nom, u.prenom,
@@ -106,7 +109,7 @@ async function verifierCode(codeSaisi) {
      FROM receipts rc
      JOIN requests r ON r.id = rc.request_id
      JOIN users u ON u.id = r.student_id
-     WHERE rc.code = $1 AND r.statut = 'valide'`,
+     WHERE (rc.code = $1 OR r.reference = $1) AND r.statut = 'valide'`,
     [code],
   );
   if (!rows[0]) throw new AppError('Code inconnu', 404);

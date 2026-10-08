@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 
 import { api } from "../../services/api.js";
+import { envoyerPieces } from "./envoyerPieces.js";
 import "./PreInscriptionPage.css";
 
 const STEPS = [
@@ -947,6 +948,30 @@ export default function PreInscriptionPage() {
     }));
   }
 
+  async function continuerVersPaiement() {
+    const pieces = DOCUMENT_TYPES.map((document) => ({
+      typePiece: document.label,
+      fichier: form.documents[document.key],
+    }));
+
+    if (!demande?.id) {
+      setError("La demande doit être enregistrée avant l’envoi des documents.");
+      return;
+    }
+
+    setCreatingDemand(true);
+    setError("");
+    try {
+      await envoyerPieces(demande.id, pieces);
+      setCurrentStep(4);
+      setPaymentStep(1);
+    } catch (err) {
+      setError(err?.message || "Impossible d’envoyer les documents.");
+    } finally {
+      setCreatingDemand(false);
+    }
+  }
+
   function renderStep3() {
     const documentCount = Object.values(
       form.documents
@@ -1150,6 +1175,7 @@ export default function PreInscriptionPage() {
           <button
             type="button"
             className="primary-button"
+            disabled={creatingDemand}
             onClick={() => {
               if (documentCount !== 3) {
                 setError(
@@ -1165,12 +1191,10 @@ export default function PreInscriptionPage() {
                 return;
               }
 
-              setError("");
-              setCurrentStep(4);
-              setPaymentStep(1);
+              continuerVersPaiement();
             }}
           >
-            Continuer vers le paiement
+            {creatingDemand ? "Envoi des documents..." : "Continuer vers le paiement"}
             <ArrowRight size={18} />
           </button>
         </div>
