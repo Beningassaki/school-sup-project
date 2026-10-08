@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 
 import { api } from '../../services/api.js';
+import { envoyerPieces } from './envoyerPieces.js';
 import LegalisationPaiement from './LegalisationPaiement.jsx';
 import './LegalisationPage.css';
 
@@ -289,10 +290,20 @@ export default function LegalisationPage() {
             id
           ).padStart(4, '0')}`;
 
-        setReference(
-          nouvelleReference
-        );
+      setReference(
+        nouvelleReference
+      );
       }
+
+      const pieces = documents.map((fichier, index) => ({
+        typePiece: index === 0
+          ? typeDocument
+          : index === 1
+            ? 'Pièce d’identité'
+            : `Document complémentaire ${index - 1}`,
+        fichier,
+      }));
+      await envoyerPieces(id, pieces);
 
       /*
        * Passage à l'écran de paiement.
@@ -537,8 +548,7 @@ export default function LegalisationPage() {
               </h2>
 
               <p>
-                Ajoutez les documents
-                nécessaires à votre demande.
+                Ajoutez d’abord le document à légaliser, puis votre pièce d’identité.
               </p>
             </div>
           </div>
