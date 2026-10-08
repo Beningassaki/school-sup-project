@@ -1,5 +1,6 @@
 // =====================================================
 // US4 : Créer une demande de pré-inscription
+// =====================================================
 // RESPONSABLE : Dreche NDONGALA
 // ROUTE : /demandes/nouvelle/pre-inscription
 // API : POST /api/demandes (type: 'pre_inscription')
@@ -7,6 +8,7 @@
 
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+
 import {
   ArrowLeft,
   ArrowRight,
@@ -204,6 +206,15 @@ function ChoiceCard({ formation }) {
         }
       />
 
+      <SummaryRow
+        label="Frais"
+        value={
+          formation?.frais
+            ? `${Number(formation.frais).toLocaleString("fr-FR")} FCFA`
+            : "—"
+        }
+      />
+
       {formation?.id && (
         <Link to={`/formations/${formation.id}`}>
           Consulter la fiche de formation
@@ -303,6 +314,9 @@ export default function PreInscriptionPage() {
 
     async function loadFormation() {
       try {
+        setLoading(true);
+        setError("");
+
         const data = await api.get(
           `/formations/${formationId}`
         );
@@ -313,10 +327,12 @@ export default function PreInscriptionPage() {
 
         setForm((previous) => ({
           ...previous,
+
           faculte:
             data?.faculte ||
             data?.faculty ||
             "",
+
           niveau:
             data?.niveau ||
             data?.level ||
@@ -381,22 +397,72 @@ export default function PreInscriptionPage() {
       setError("");
 
       /*
-       * Contrat connu actuellement :
-       * POST /api/demandes
-       * type = pre_inscription
+       * Création de la demande.
        *
-       * Les champs complémentaires pourront être adaptés
-       * exactement au backend lorsque son schéma sera fourni.
+       * IMPORTANT :
+       * Le backend attend :
+       * - type
+       * - objet
+       * - informations
+       * - pieces
+       *
+       * Le montant de la formation est enregistré
+       * dans informations.montantTotal.
        */
+
+      const montantFormation = Number(formation.frais) || 0;
+
+      if (montantFormation <= 0) {
+        setError(
+          "Le montant de la formation est invalide."
+        );
+        return;
+      }
+
       const response = await api.post("/demandes", {
         type: "pre_inscription",
-        formation_id: formation.id,
-        annee: form.annee,
-        niveau: form.niveau,
-        faculte: form.faculte,
+
+        objet: `Pré-inscription ${
+          formation.filiere ||
+          formation.nom ||
+          ""
+        }`,
+
+        informations: {
+          formationId: formation.id,
+          formation_id: formation.id,
+
+          filiere:
+            formation.filiere ||
+            formation.nom ||
+            "",
+
+          niveau: form.niveau,
+
+          faculte: form.faculte,
+
+          annee: form.annee,
+
+          montantTotal: montantFormation,
+        },
+
+        pieces: [],
       });
 
-      setDemande(response);
+      /*
+       * Le backend renvoie :
+       * {
+       *   succes: true,
+       *   data: {...}
+       * }
+       *
+       * On récupère donc data.
+       */
+
+      const nouvelleDemande =
+        response?.data || response;
+
+      setDemande(nouvelleDemande);
 
       setCurrentStep(2);
     } catch (err) {
@@ -409,30 +475,41 @@ export default function PreInscriptionPage() {
     }
   }
 
+  // =====================================================
+  // PAIEMENT
+  // =====================================================
+
   async function confirmerPaiement() {
     if (!demande?.id) {
-      setError('La demande doit être enregistrée avant le paiement.');
+      setError(
+        "La demande doit être enregistrée avant le paiement."
+      );
       return;
     }
 
     if (!form.numeroPaiement.trim()) {
-      setError('Veuillez saisir votre numéro Mobile Money.');
+      setError(
+        "Veuillez saisir votre numéro Mobile Money."
+      );
       return;
     }
 
     try {
       setCreatingDemand(true);
-      setError('');
-      await api.post('/paiements', {
+      setError("");
+
+      await api.post("/paiements", {
         demandeId: Number(demande.id),
         operateur: form.operateur,
         telephone: form.numeroPaiement.trim(),
-        simulation: 'confirme',
+        simulation: "confirme",
       });
+
       setCurrentStep(5);
     } catch (err) {
       setError(
-        err?.message || 'Le paiement de démonstration a échoué.'
+        err?.message ||
+          "Le paiement de démonstration a échoué."
       );
     } finally {
       setCreatingDemand(false);
@@ -524,6 +601,19 @@ export default function PreInscriptionPage() {
               />
             </Field>
 
+            <Field label="Frais de formation">
+              <input
+                value={
+                  formation?.frais
+                    ? `${Number(
+                        formation.frais
+                      ).toLocaleString("fr-FR")} FCFA`
+                    : ""
+                }
+                readOnly
+              />
+            </Field>
+
             <p className="required-note">
               * Champs obligatoires
             </p>
@@ -563,7 +653,9 @@ export default function PreInscriptionPage() {
               ? "Création du dossier..."
               : "Continuer vers mon profil"}
 
-            {!creatingDemand && <ArrowRight size={18} />}
+            {!creatingDemand && (
+              <ArrowRight size={18} />
+            )}
           </button>
         </div>
       </>
@@ -596,8 +688,8 @@ export default function PreInscriptionPage() {
         <p className="page-intro">
           Dossier{" "}
           {demande?.reference || "PRE-2026-XXXX"} ·{" "}
-          {formation?.filiere || formation?.nom} ·{" "}
-          Année {form.annee}.
+          {formation?.filiere || formation?.nom} · Année{" "}
+          {form.annee}.
         </p>
 
         <StepProgress currentStep={2} />
@@ -644,6 +736,7 @@ export default function PreInscriptionPage() {
                         )
                       }
                     />
+
                     <CalendarDays size={18} />
                   </div>
                 </Field>
@@ -703,6 +796,7 @@ export default function PreInscriptionPage() {
                         )
                       }
                     />
+
                     <Mail size={18} />
                   </div>
                 </Field>
@@ -718,6 +812,7 @@ export default function PreInscriptionPage() {
                         )
                       }
                     />
+
                     <Phone size={18} />
                   </div>
                 </Field>
@@ -814,7 +909,7 @@ export default function PreInscriptionPage() {
   }
 
   // =====================================================
-  // ÉTAPE 3
+  // DOCUMENTS
   // =====================================================
 
   function handleFileChange(key, file) {
@@ -844,6 +939,7 @@ export default function PreInscriptionPage() {
 
     setForm((previous) => ({
       ...previous,
+
       documents: {
         ...previous.documents,
         [key]: file,
@@ -886,6 +982,7 @@ export default function PreInscriptionPage() {
           <div>
             <div className="info-banner">
               <Info size={18} />
+
               <span>
                 Pièces et formats indicatifs à valider :
                 PDF, JPG ou PNG, 5 Mo maximum par document.
@@ -953,6 +1050,7 @@ export default function PreInscriptionPage() {
                   ) : (
                     <label className="upload-zone">
                       <Upload size={20} />
+
                       <span>
                         Ajouter le document
                       </span>
@@ -1017,7 +1115,11 @@ export default function PreInscriptionPage() {
                 label="Frais"
                 value={
                   formation?.frais
-                    ? `${formation.frais} FCFA · À valider`
+                    ? `${Number(
+                        formation.frais
+                      ).toLocaleString(
+                        "fr-FR"
+                      )} FCFA`
                     : "À valider"
                 }
               />
@@ -1025,6 +1127,7 @@ export default function PreInscriptionPage() {
 
             <div className="success-banner">
               <CheckCircle2 size={18} />
+
               {documentCount} documents sur 3 ajoutés.
             </div>
           </aside>
@@ -1076,12 +1179,15 @@ export default function PreInscriptionPage() {
   }
 
   // =====================================================
-  // ÉTAPE 4
+  // PAIEMENT
   // =====================================================
 
   function renderStep4() {
-    const amount =
-      formation?.frais || "5 000 FCFA";
+    const amount = formation?.frais
+      ? `${Number(
+          formation.frais
+        ).toLocaleString("fr-FR")} FCFA`
+      : "0 FCFA";
 
     return (
       <>
@@ -1102,8 +1208,8 @@ export default function PreInscriptionPage() {
         <h1>Comment souhaitez-vous payer ?</h1>
 
         <p className="page-intro">
-          Choisissez l’opérateur associé à votre numéro de
-          téléphone.
+          Choisissez l’opérateur associé à votre numéro
+          de téléphone.
         </p>
 
         <PaymentProgress
@@ -1136,6 +1242,11 @@ export default function PreInscriptionPage() {
                 }
               />
 
+              <SummaryRow
+                label="Montant"
+                value={amount}
+              />
+
               <button
                 className="primary-button"
                 type="button"
@@ -1150,9 +1261,11 @@ export default function PreInscriptionPage() {
 
             <div className="amount-card">
               <span>Montant à payer</span>
+
               <strong>{amount}</strong>
+
               <small>
-                Montant d’exemple · tarif à valider
+                Frais récupérés depuis la formation
               </small>
             </div>
           </div>
@@ -1226,9 +1339,11 @@ export default function PreInscriptionPage() {
 
               <div className="amount-card">
                 <span>Montant à payer</span>
+
                 <strong>{amount}</strong>
+
                 <small>
-                  Montant d’exemple · tarif à valider
+                  Frais récupérés depuis la formation
                 </small>
               </div>
             </div>
@@ -1314,6 +1429,11 @@ export default function PreInscriptionPage() {
                       "PRE-2026-XXXX"
                     }
                   />
+
+                  <SummaryRow
+                    label="Montant"
+                    value={amount}
+                  />
                 </div>
               </aside>
             </div>
@@ -1327,10 +1447,14 @@ export default function PreInscriptionPage() {
                 <Wallet size={28} />
               </div>
 
-              <h2>Validez votre paiement</h2>
+              <h2>
+                Validez votre paiement
+              </h2>
 
               <p>
-                Mode démonstration : aucun débit réel ne sera effectué. Une confirmation de test sera enregistrée.
+                Mode démonstration : aucun débit réel ne
+                sera effectué. Une confirmation de test
+                sera enregistrée.
               </p>
 
               <div className="validation-summary">
@@ -1360,6 +1484,12 @@ export default function PreInscriptionPage() {
                 </span>
               </div>
 
+              {error && (
+                <div className="form-error">
+                  {error}
+                </div>
+              )}
+
               <div className="validation-actions">
                 <button
                   type="button"
@@ -1378,7 +1508,10 @@ export default function PreInscriptionPage() {
                   onClick={confirmerPaiement}
                   disabled={creatingDemand}
                 >
-                  {creatingDemand ? 'Validation…' : 'Simuler le paiement confirmé'}
+                  {creatingDemand
+                    ? "Validation…"
+                    : "Simuler le paiement confirmé"}
+
                   <ArrowRight size={18} />
                 </button>
               </div>
@@ -1386,7 +1519,7 @@ export default function PreInscriptionPage() {
           </div>
         )}
 
-        {error && (
+        {error && paymentStep !== 3 && (
           <div className="form-error">
             {error}
           </div>
@@ -1478,14 +1611,18 @@ export default function PreInscriptionPage() {
                 label="Paiement"
                 value={
                   formation?.frais
-                    ? `${formation.frais} FCFA · Réussi`
+                    ? `${Number(
+                        formation.frais
+                      ).toLocaleString(
+                        "fr-FR"
+                      )} FCFA · Réussi`
                     : "Réussi"
                 }
               />
 
               <SummaryRow
                 label="Transaction"
-                value="À récupérer du paiement"
+                value="Paiement confirmé"
               />
             </div>
           </section>
@@ -1537,9 +1674,17 @@ export default function PreInscriptionPage() {
     return (
       <div className="preinscription-page">
         <div className="preinscription-container">
-          <div className="preinscription-state error" role="alert">
-            <p>Aucune formation n’a été sélectionnée.</p>
-            <Link to="/formations">Choisir une formation</Link>
+          <div
+            className="preinscription-state error"
+            role="alert"
+          >
+            <p>
+              Aucune formation n’a été sélectionnée.
+            </p>
+
+            <Link to="/formations">
+              Choisir une formation
+            </Link>
           </div>
         </div>
       </div>

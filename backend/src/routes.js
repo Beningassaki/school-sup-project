@@ -15,7 +15,7 @@ router.get(
 // Chaque dev ajoute UNE ligne pour son module, dans son premier commit.
 router.use('/formations', require('./modules/formations/formations.routes')); // US2
 router.use('/auth', require('./modules/auth/auth.routes')); // US1
-// router.use('/demandes', require('./modules/demandes/demandes.routes'));    // US3, US4
+ router.use('/demandes', require('./modules/demandes/demandes.routes.js'));    // US3, US4
 router.use('/paiements', require('./modules/paiements/paiements.routes')); // US5 · Dubien
 router.use('/recus', require('./modules/recus/recus.routes')); // US9, US13 · Alty
 router.use('/suivi', require('./modules/suivi/suivi.routes')); // US6
